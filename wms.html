@@ -1,0 +1,75 @@
+<html lang="zh">
+<head>
+    <meta charset="utf-8" />
+    <meta
+            name="viewport"
+            content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>wms</title>
+
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.22/esri/themes/light/main.css"/>
+    <script src="https://js.arcgis.com/4.22/"></script>
+</head>
+<body>
+<div id="viewDiv"></div>
+<script>
+
+    const MapParams={
+        extent:{
+            xmin:-20037508.3428,
+            ymin: -147730762.67,
+            xmax: 20037508.3428,
+            ymax: 147730758.195,
+            spatialReference: {wkid:900913}
+        },
+        spatialReference: {wkid:900913}
+    };
+    require(["esri/Map",
+        'esri/Basemap',
+        "esri/views/MapView",
+        "esri/layers/WMSLayer",], (
+        Map,
+        Basemap,
+        MapView,
+        WMSLayer,
+    ) => {
+        const map = new Map({
+            basemap:{}
+        });
+        const view = new MapView({
+            container: "viewDiv",
+            map: map,
+            extent: MapParams.extent,
+            spatialReference: MapParams.spatialReference,
+        });
+        window.viewer = view;
+        let    resourceInfo={
+           url: "https://ows.terrestris.de/osm/service",
+           sublayers: [{name: "OSM-WMS"}],
+           version: "1.1.1",
+           imageFormat:"image/png",
+            customLayerParameters: {
+                SRS: "EPSG:900913",
+            },
+            mapUrl:"https://ows.terrestris.de/osm/service",
+            resourceInfo:{},
+            supportsSpatialReference:function (){
+                return true
+            }
+       }
+        const layer = new WMSLayer(resourceInfo);
+       map.add(layer)
+   })
+</script>
+</body>
+</html>
