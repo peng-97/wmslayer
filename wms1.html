@@ -23,6 +23,7 @@
 <body>
 <div id="viewDiv"></div>
 <script>
+
     const MapParams={
         extent:{
             xmin:-20037508.3428,
@@ -36,7 +37,8 @@
     require(["esri/Map",
         'esri/Basemap',
         "esri/views/MapView",
-        "esri/layers/WMSLayer",], (
+        "./MWMSLayer.js"
+    ], (
         Map,
         Basemap,
         MapView,
@@ -53,22 +55,19 @@
         });
         window.viewer = view;
         let    resourceInfo={
-            url: "https://ows.terrestris.de/osm/service",
-            sublayers: [{name: "OSM-WMS"}],
-            version: "1.1.1",
-            imageFormat:"image/png",
+           url: "https://ows.terrestris.de/osm/service",
+           // sublayers: [{name: "OSM-WMS"}],
+           version: "1.1.1",
+           imageFormat:"image/png",
             customLayerParameters: {
                 SRS: "EPSG:900913",
             },
-            mapUrl:"https://ows.terrestris.de/osm/service",
-            resourceInfo:{},
-            supportsSpatialReference:function (){
-                return true
-            }
-        }
+            unGetCap:true,
+            unMapSpr:true
+       }
         const layer = new WMSLayer(resourceInfo);
-        map.add(layer)
-    })
+       map.add(layer)
+   })
 </script>
 </body>
 </html>
